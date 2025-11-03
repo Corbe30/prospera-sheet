@@ -3,7 +3,7 @@ import {
   cancelNormalSelected,
   locale,
   setCaretPosition,
-} from "@fortune-sheet/core";
+} from "@prospera-sheet/core";
 import _ from "lodash";
 import WorkbookContext from "../../context";
 import "./index.css";

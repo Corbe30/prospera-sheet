@@ -9,7 +9,7 @@ import {
   FilterDate,
   FilterColor,
   Context,
-} from "@fortune-sheet/core";
+} from "@prospera-sheet/core";
 import React, {
   useCallback,
   useContext,

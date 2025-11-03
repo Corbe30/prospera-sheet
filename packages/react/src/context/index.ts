@@ -6,7 +6,7 @@ import {
   Settings,
   GlobalCache,
   PatchOptions,
-} from "@fortune-sheet/core";
+} from "@prospera-sheet/core";
 
 export type RefValues = {
   globalCache: GlobalCache;
