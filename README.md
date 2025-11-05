@@ -6,7 +6,7 @@
 
 <div align="center">
 
-[![xiemala](https://img.shields.io/badge/maintained%20by-corbe30-cc00ff.svg)](https:corbe30.github.io)
+[![xiemala](https://img.shields.io/badge/maintained%20by-corbe30-cc00ff.svg)](https://corbe30.github.io)
 
 </div>
 
@@ -22,7 +22,7 @@ FortuneExcel will always be compatible with both ProsperaSheet and FortuneSheet.
 
 Moreover, due to its access limitations and new changes to npm token expiration, we won't be able to maintain FortuneSheet further.
 
-## Improvements to FortuneSheet in Upcoming Versions
+## Upcoming Improvements to FortuneSheet
 
 - [ ] Special Paste Support [ctrl/cmd + shift + v]
 - [ ] Updated documentation
