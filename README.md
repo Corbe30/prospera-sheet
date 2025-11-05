@@ -84,7 +84,7 @@ yarn add @prospera-sheet/react
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Workbook } from "@prospera-sheet/react";
-import "@fortune-sheet/react/dist/index.css"
+import "@prospera-sheet/react/dist/index.css"
 
 ReactDOM.render(
   <Workbook data={[{ name: "Sheet1" }]} />,
