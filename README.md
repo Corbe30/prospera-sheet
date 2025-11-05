@@ -23,18 +23,19 @@ ProsperaSheet encourages faster SDLC, pushing newer versions quicker. Due to thi
 ProsperaSheet cannot promise backward compatibility with FortuneSheet, but promises an optimized experience in edit operations with fewer P0/P1 issues.
 FortuneExcel will always be compatible with both ProsperaSheet and FortuneSheet.
 
-Moreover, due to its access limitations and new changes to npm token expiration, we won't be able to maintain FortuneSheet further.
+Moreover, due to its access limitations and new changes to [npm token expiration](https://github.blog/changelog/2025-09-29-strengthening-npm-security-important-changes-to-authentication-and-token-management/), we might not be able to maintain FortuneSheet further.
 
-## Upcoming Improvements to FortuneSheet
+## Upcoming Improvements
 
 - [ ] Special Paste Support [ctrl/cmd + shift + v]
 - [ ] Updated documentation
-- [ ] Updated Storybooks
+- [ ] Updated and Improved Storybooks
 - [ ] Dark theme
 - [ ] NaN in Selected Cell/ Range box
 - [ ] Optimized Edit Cell operation
 - [ ] Optimized Load by deferring caching
-- [ ] Optimized Memory Usage to reduce craches
+- [ ] Optimized Memory Usage to reduce crashes
+- [ ] Placeholder text
 
 ## Get started (react)
 
