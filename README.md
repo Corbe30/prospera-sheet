@@ -7,6 +7,9 @@
 <div align="center">
 
 [![xiemala](https://img.shields.io/badge/maintained%20by-corbe30-cc00ff.svg)](https://corbe30.github.io)
+<a href="http://npmjs.com/package/@prospera-sheet/react" alt="ProsperaSheet on npm">
+<img src="https://img.shields.io/npm/v/@prospera-sheet/react" /></a> <a href="http://npmjs.com/package/@prospera-sheet/react" alt="prospera-sheet downloads">
+<img src="https://img.shields.io/npm/d18m/%40prospera-sheet%2Freact" /></a>
 
 </div>
 
