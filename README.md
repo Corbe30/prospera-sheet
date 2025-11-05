@@ -1,8 +1,8 @@
 <p align="center">
   <img align="center" src="logo.png" width="150px" height="150px" />
 </p>
-<h1 align="center">FortuneSheet</h1>
-<p align="center">FortuneSheet is a drop-in javascript spreadsheet library that provides rich features like Excel and Google Sheets</p>
+<h1 align="center">ProsperaSheet</h1>
+<p align="center">ProsperaSheet is a fork of FortuneSheet: for experimental features, faster bug fixes and optimizations.</p>
 
 <div align="center">
 
