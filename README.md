@@ -18,91 +18,23 @@ English | [简体中文](./README-zh.md)
 
 ## Purpose
 
-The goal of `FortuneSheet` is to make a feature-rich, easy-to-configure online spreadsheet that you can use out-of-the-box.
+ProsperaSheet encourages faster SDLC, pushing newer versions quicker. Due to this, testing may not be as thorough as in FortuneSheet. Here, ProsperaSheet depends on the community to bring the developers to its attention for quicker error resolution!
 
-This project is originated from [Luckysheet](https://github.com/mengshukeji/Luckysheet) and has inherited many code from it. Lots of efforts have done to translate the whole project to typescript (still in progress), and solved problems in the design of the original project.
+ProsperaSheet cannot promise backward compatibility with FortuneSheet, but promises an optimized experience in edit operations with fewer P0/P1 issues.
+FortuneExcel will always be compatible with both ProsperaSheet and FortuneSheet.
 
-We aim to make FortuneSheet powerful yet easy to maintain.
+Moreover, due to its access limitations and new changes to npm token expiration, we won't be able to maintain FortuneSheet further.
 
-## Communication
-* [Discord](https://discord.gg/vHGwMB77w5) English community 
-* [QQ](https://jq.qq.com/?_wv=1027&k=iHaSN47J) Chinese community
-* [Xiemala](https://xiemala.com/s/ctJmUn)
+## Improvements to FortuneSheet in Upcoming Versions
 
-## Live demo
-> Note: Some part of Storybook is outdated
-
-Take a look at the live demo at [fortune-sheet-demo](https://ruilisi.github.io/fortune-sheet-demo/).
-
-<p>
-  <img align="center" src="screenshot.png" width="400px" />
-</p>
-
-## Attention
-Before stable release of 1.0, input data structure and APIs may change during development. If you encounter errors after upgrading a version, check [Changelog](./CHANGELOG.md) and [Migration Guide](#migrating-data-from-luckysheet).
-
-## Improvements to Luckysheet
-
-- Written fully in typescript.
-- You can now use `import` / `require` to use the library.
-  ```js
-  import { Workbook } from '@fortune-sheet/react'
-  ```
-- Multiple instance on the same page is supported.
-- Dropped `jQuery` dependency, uses native `React` / `Vue` + `immer` to manage the dom and state.
-- Changed to a forked [handsontable/formula-parser](https://github.com/handsontable/formula-parser) to handle formula calculations.
-- Optimized the dom structure.
-- Replaced icons from `iconfont` with SVGs, as `iconfont` icons are inconvenient to update for other maintainers.
-- No visible elements is created outside container.
-- Never stores data in the `window` object.
-
-## Features
-
-- Data structure is mostly compatible with Luckysheet (see [Migration Guide](#migrating-data-from-luckysheet)).
-- **Formatting**: style, text alignment and rotation, text truncation, overflow, automatic line wrapping, multiple data types, cell segmentation style, hyperlink
-- **Cells**: multiple selection, borders, fill, merge cells
-- **Row & column**: insert, delete, hide, sort and filter rows or columns
-- **Operation**: copy, paste, cut, hot keys
-- **Formulas & Functions**: Built-in formulas
-- **Import/export Excel**: [plugin](https://github.com/corbe30/fortuneexcel) for .xlsx import and export
-- **Additional features**: supports images, comments, data verification and custom tools
-
-## Roadmap
-- ✅ Support cooperative editing with backend storage.
-- ✅ Support undo/redo.
-- ✅ Mobile adaption.
-- ✅ Expose APIs.
-- ✅ Add tests.
-- More basic features:
-  - ✅ fill handle
-  - ✅fonts
-  - ✅ format painter
-  - ✅ comments
-  - ✅ insert images
-  - ✅ more toolbar buttons
-- ✅ [Excel import and export plugin](https://github.com/corbe30/fortuneexcel)
-- Support Vue
-- More features:
-  - ✅ sort
-  - ✅ filter
-  - ✅ hooks
-  - ✅ conditional formatting
-  - ✅ drag and drop
-  - ✅ find and replace
-  - ✅ data verification
-  - ✅ freeze
-  - ✅ hide, and split text
-  - location
-- More advanced features:
-  - ✅ screenshots
-  - pivot tables
-  - charts
-  
-
-## Documentation
-> Note: Some topics in documentation is outdated
-
-See detailed documentation at [fortune-sheet-doc](https://ruilisi.github.io/fortune-sheet-docs/).
+- [ ] Special Paste Support [ctrl/cmd + shift + v]
+- [ ] Updated documentation
+- [ ] Updated Storybooks
+- [ ] Dark theme
+- [ ] NaN in Selected Cell/ Range box
+- [ ] Optimized Edit Cell operation
+- [ ] Optimized Load by deferring caching
+- [ ] Optimized Memory Usage to reduce craches
 
 ## Get started (react)
 
@@ -112,7 +44,7 @@ See detailed documentation at [fortune-sheet-doc](https://ruilisi.github.io/fort
 <summary>Using npm</summary>
 
 ```shell
-npm install @fortune-sheet/react
+npm install @prospera-sheet/react
 ```
 </details>
 
@@ -120,7 +52,7 @@ npm install @fortune-sheet/react
 <summary>Using pnpm</summary>
 
 ```shell
-pnpm install @fortune-sheet/react
+pnpm install @prospera-sheet/react
 ```
 </details>
 
@@ -128,7 +60,7 @@ pnpm install @fortune-sheet/react
 <summary>Using yarn</summary>
 
 ```shell
-yarn add @fortune-sheet/react
+yarn add @prospera-sheet/react
 ```
 </details>
 
@@ -150,7 +82,7 @@ yarn add @fortune-sheet/react
 ```js
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Workbook } from "@fortune-sheet/react";
+import { Workbook } from "@prospera-sheet/react";
 import "@fortune-sheet/react/dist/index.css"
 
 ReactDOM.render(
@@ -182,17 +114,10 @@ Run it with `node index.js` and visit [Collabration example](https://ruilisi.git
 
 For detailed doc about `Op`, refer to [fortune-sheet-doc](./docs/guide/op.md)
 
-## Migrating data from Luckysheet
-The overall data structure of FortuneSheet is the same as Luckysheet, with some naming differences:
-
-1. sheet.index -> sheet.id
-2. sheet.calcChain[].id -> sheet.calcChain[].id
-
 ## Contributing
 Expected workflow is: Fork -> Patch -> Push -> Pull Request
 
 Please make sure to read the [Contributing Guide](./docs/guide/contribute.md) before making a pull request.
-
 
 ## Development
 ### Installation
