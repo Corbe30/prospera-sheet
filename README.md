@@ -36,6 +36,8 @@ Moreover, due to its access limitations and new changes to [npm token expiration
 - [ ] Optimized Load by deferring caching
 - [ ] Optimized Memory Usage to reduce crashes
 - [ ] Placeholder text
+- [ ] Data Validation Sidebar (https://github.com/ruilisi/fortune-sheet/issues/746)
+- [ ] Placeholder text (https://github.com/ruilisi/fortune-sheet/issues/716)
 
 ## Get started (react)
 
