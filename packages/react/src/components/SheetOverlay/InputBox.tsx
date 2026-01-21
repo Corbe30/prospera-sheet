@@ -36,7 +36,7 @@ import usePrevious from "../../hooks/usePrevious";
 const InputBox: React.FC = () => {
   const { context, setContext, refs } = useContext(WorkbookContext);
   const inputRef = useRef<HTMLDivElement>(null);
-  const lastKeyDownEventRef = useRef<KeyboardEvent>(null);
+  const lastKeyDownEventRef = useRef<KeyboardEvent>();
   const prevCellUpdate = usePrevious<any[]>(context.luckysheetCellUpdate);
   const prevSheetId = usePrevious<string>(context.currentSheetId);
   const [isHidenRC, setIsHidenRC] = useState<boolean>(false);
@@ -322,7 +322,6 @@ const InputBox: React.FC = () => {
 
   const onChange = useCallback(
     (__: any, isBlur?: boolean) => {
-      // setInputHTML(html);
       const e = lastKeyDownEventRef.current;
       if (!e) return;
       const kcode = e.keyCode;
@@ -330,19 +329,14 @@ const InputBox: React.FC = () => {
 
       if (
         !(
-          (
-            (kcode >= 112 && kcode <= 123) ||
-            kcode <= 46 ||
-            kcode === 144 ||
-            kcode === 108 ||
-            e.ctrlKey ||
-            e.altKey ||
-            (e.shiftKey &&
-              (kcode === 37 || kcode === 38 || kcode === 39 || kcode === 40))
-          )
-          // kcode === keycode.WIN ||
-          // kcode === keycode.WIN_R ||
-          // kcode === keycode.MENU))
+          (kcode >= 112 && kcode <= 123) ||
+          kcode <= 46 ||
+          kcode === 144 ||
+          kcode === 108 ||
+          e.ctrlKey ||
+          e.altKey ||
+          (e.shiftKey &&
+            (kcode === 37 || kcode === 38 || kcode === 39 || kcode === 40))
         ) ||
         kcode === 8 ||
         kcode === 32 ||
@@ -361,7 +355,6 @@ const InputBox: React.FC = () => {
           if (!isAllowEdit(draftCtx, draftCtx.luckysheet_select_save)) {
             return;
           }
-          // if(event.target.id!="luckysheet-input-box" && event.target.id!="luckysheet-rich-text-editor"){
           handleFormulaInput(
             draftCtx,
             refs.fxInput.current,
@@ -369,18 +362,8 @@ const InputBox: React.FC = () => {
             kcode,
             preText.current
           );
-          // clearSearchItemActiveClass();
-          // formula.functionInputHanddler(
-          //   $("#luckysheet-functionbox-cell"),
-          //   $("#luckysheet-rich-text-editor"),
-          //   kcode
-          // );
-          // setCenterInputPosition(
-          //   draftCtx.luckysheetCellUpdate[0],
-          //   draftCtx.luckysheetCellUpdate[1],
-          //   draftCtx.flowdata
-          // );
-          // }
+          // Show dropdown when typing in cell
+          draftCtx.dataVerificationDropDownList = true;
         });
       }
     },

@@ -20,12 +20,60 @@ import SVGIcon from "../SVGIcon";
 import "./index.css";
 
 const DropDownList: React.FC = () => {
+  // State for keyboard navigation
+  const [activeIndex, setActiveIndex] = useState<number>(-1);
+  // State for live filter text
+  const [filterText, setFilterText] = useState("");
   const { context, setContext } = useContext(WorkbookContext);
   const containerRef = useRef<HTMLDivElement>(null);
   const [list, setList] = useState<any[]>([]);
   const [isMul, setIsMul] = useState<boolean>(false);
   const [position, setPosition] = useState<{ left: number; top: number }>();
   const [selected, setSelected] = useState<any[]>([]);
+
+  // Handle keyboard navigation globally when dropdown is open
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (list.length === 0) return;
+
+      if (e.key === "ArrowDown") {
+        setActiveIndex((prev) => (prev < list.length - 1 ? prev + 1 : 0));
+        e.preventDefault();
+        e.stopPropagation();
+      } else if (e.key === "ArrowUp") {
+        setActiveIndex((prev) => (prev > 0 ? prev - 1 : list.length - 1));
+        e.preventDefault();
+        e.stopPropagation();
+      } else if (e.key === "Enter" && activeIndex >= 0) {
+        const v = list[activeIndex];
+        if (v !== undefined) {
+          setContext((ctx) => {
+            const arr = isMul ? selected.slice() : [];
+            const index = arr.indexOf(v);
+            if (index < 0) {
+              arr.push(v);
+            } else {
+              arr.splice(index, 1);
+            }
+            setSelected(arr);
+            setDropcownValue(ctx, v, arr);
+            // Close dropdown and exit edit mode after selection
+            if (!isMul) {
+              ctx.dataVerificationDropDownList = false;
+              ctx.luckysheetCellUpdate = [];
+            }
+          });
+        }
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown, true);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown, true);
+    };
+  }, [list, activeIndex, isMul, selected, setContext]);
 
   const close = useCallback(() => {
     setContext((ctx) => {
@@ -55,21 +103,43 @@ const DropDownList: React.FC = () => {
     const index = getSheetIndex(context, context.currentSheetId) as number;
     const { dataVerification } = context.luckysheetfile[index];
     const item = dataVerification[`${rowIndex}_${colIndex}`];
-    const dropdownList = getDropdownList(context, item.value1);
-    // 初始化多选的下拉列表
+    const dropdownList = item ? getDropdownList(context, item.value1) : [];
+    // Filter dropdown list by cell input value
     const cellValue = getCellValue(rowIndex, colIndex, d);
-
+    const filteredList = filterText
+      ? dropdownList.filter(
+          (listItem) =>
+            listItem &&
+            String(listItem).toLowerCase().includes(filterText.toLowerCase())
+        )
+      : dropdownList;
     if (cellValue) {
       setSelected(cellValue.toString().split(","));
     }
-    setList(dropdownList);
+    setList(filteredList);
     setPosition({
       left: col_pre,
       top: row,
     });
-    setIsMul(item.type2 === "true");
+    setIsMul(item && item.type2 === "true");
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [context.luckysheetCellUpdate, filterText]);
+  // Live update filterText on cell input change using MutationObserver
+  useEffect(() => {
+    const input = document.getElementById("luckysheet-rich-text-editor");
+    if (!input) return undefined;
+    const observer = new MutationObserver(() => {
+      setFilterText(input.textContent || "");
+    });
+    observer.observe(input, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    });
+    // Initial set
+    setFilterText(input.textContent || "");
+    return () => observer.disconnect();
+  }, [context.luckysheetCellUpdate]);
 
   // 设置下拉列表的值
   useEffect(() => {
@@ -82,7 +152,7 @@ const DropDownList: React.FC = () => {
     const index = getSheetIndex(context, context.currentSheetId) as number;
     const { dataVerification } = context.luckysheetfile[index];
     const item = dataVerification[`${rowIndex}_${colIndex}`];
-    if (item.type2 !== "true") return;
+    if (!item || item.type2 !== "true") return;
     const d = getFlowdata(context);
     if (!d) return;
     const cellValue = getCellValue(rowIndex, colIndex, d);
@@ -93,6 +163,11 @@ const DropDownList: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.luckysheetfile]);
 
+  // Reset activeIndex when list changes
+  useEffect(() => {
+    setActiveIndex(list.length > 0 ? 0 : -1);
+  }, [list]);
+
   return (
     <div
       id="luckysheet-dataVerification-dropdown-List"
@@ -100,18 +175,20 @@ const DropDownList: React.FC = () => {
       ref={containerRef}
       onClick={(e) => e.stopPropagation()}
       onChange={(e) => e.stopPropagation()}
-      onKeyDown={(e) => e.stopPropagation()}
-      onMouseDown={(e) => e.stopPropagation()}
-      onMouseUp={(e) => e.stopPropagation()}
-      tabIndex={0}
-    >
-      {list.map((v, i) => (
-        <div
-          className="dropdown-List-item"
-          key={i}
-          onClick={() => {
+      tabIndex={-1}
+      onKeyDown={(e) => {
+        if (list.length === 0) return;
+        if (e.key === "ArrowDown") {
+          setActiveIndex((prev) => (prev < list.length - 1 ? prev + 1 : 0));
+          e.preventDefault();
+        } else if (e.key === "ArrowUp") {
+          setActiveIndex((prev) => (prev > 0 ? prev - 1 : list.length - 1));
+          e.preventDefault();
+        } else if (e.key === "Enter" && activeIndex >= 0) {
+          const v = list[activeIndex];
+          if (v !== undefined) {
             setContext((ctx) => {
-              const arr = selected;
+              const arr = isMul ? selected.slice() : [];
               const index = arr.indexOf(v);
               if (index < 0) {
                 arr.push(v);
@@ -120,9 +197,45 @@ const DropDownList: React.FC = () => {
               }
               setSelected(arr);
               setDropcownValue(ctx, v, arr);
+              // Close dropdown and exit edit mode after selection
+              if (!isMul) {
+                ctx.dataVerificationDropDownList = false;
+                ctx.luckysheetCellUpdate = [];
+              }
+            });
+          }
+          e.preventDefault();
+        }
+        // Let all other keys bubble up to cell input
+      }}
+      onMouseDown={(e) => e.stopPropagation()}
+      onMouseUp={(e) => e.stopPropagation()}
+    >
+      {list.map((v, i) => (
+        <div
+          className={`dropdown-List-item${i === activeIndex ? " active" : ""}`}
+          key={i}
+          onClick={() => {
+            setContext((ctx) => {
+              const arr = isMul ? selected.slice() : [];
+              const index = arr.indexOf(v);
+              if (index < 0) {
+                arr.push(v);
+              } else {
+                arr.splice(index, 1);
+              }
+              setSelected(arr);
+              setDropcownValue(ctx, v, arr);
+              // Close dropdown and exit edit mode after selection
+              if (!isMul) {
+                ctx.dataVerificationDropDownList = false;
+                ctx.luckysheetCellUpdate = [];
+              }
             });
           }}
           tabIndex={0}
+          style={i === activeIndex ? { background: "#e6f7ff" } : {}}
+          onMouseEnter={() => setActiveIndex(i)}
         >
           <SVGIcon
             name="check"
