@@ -448,7 +448,7 @@ const SheetOverlay: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.currentSheetId, context.luckysheet_select_save]);
 
-  const cellValue = () => {
+  const cellValue = useCallback(() => {
     if ((context.luckysheet_select_save?.length ?? 0) > 0) {
       const selection =
         context.luckysheet_select_save?.[
@@ -465,7 +465,11 @@ const SheetOverlay: React.FC = () => {
       return cellVal;
     }
     return "";
-  };
+  }, [
+    context.currentSheetId,
+    context.luckysheet_select_save,
+    context.luckysheetfile,
+  ]);
 
   const computedCellValue = cellValue();
 
@@ -474,7 +478,7 @@ const SheetOverlay: React.FC = () => {
       setLastRangeText(String(rangeText));
       setLastCellValue(String(cellValue()));
     }
-  }, [context.sheetFocused]); // Runs only when sheet focus toggles
+  }, [cellValue, context.sheetFocused, rangeText]); // Runs only when sheet focus toggles
 
   return (
     <main

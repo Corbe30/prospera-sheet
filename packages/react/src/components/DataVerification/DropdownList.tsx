@@ -31,6 +31,20 @@ const DropDownList: React.FC = () => {
   const [position, setPosition] = useState<{ left: number; top: number }>();
   const [selected, setSelected] = useState<any[]>([]);
 
+  // Prevent worksheet scroll when scrolling in dropdown
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return undefined;
+
+    const handleWheel = (e: WheelEvent) => {
+      // Stop propagation to prevent worksheet from scrolling
+      e.stopPropagation();
+    };
+
+    container.addEventListener("wheel", handleWheel, { passive: true });
+    return () => container.removeEventListener("wheel", handleWheel);
+  }, []);
+
   // Handle keyboard navigation globally when dropdown is open
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
