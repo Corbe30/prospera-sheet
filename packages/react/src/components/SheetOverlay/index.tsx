@@ -803,7 +803,7 @@ const SheetOverlay: React.FC = () => {
             <LinkEditCard {...context.linkCard} />
           )}
           {context.rangeDialog?.show && <RangeDialog />}
-          <FilterOptions getContainer={() => containerRef.current!} />
+          <FilterOptions />
           <InputBox />
           <AutocompleteList />
           <NotationBoxes />
