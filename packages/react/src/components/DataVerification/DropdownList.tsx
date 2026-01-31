@@ -51,11 +51,15 @@ const DropDownList: React.FC = () => {
       if (list.length === 0) return;
 
       if (e.key === "ArrowDown") {
-        setActiveIndex((prev) => (prev < list.length - 1 ? prev + 1 : 0));
+        queueMicrotask(() => {
+          setActiveIndex((prev) => (prev < list.length - 1 ? prev + 1 : 0));
+        });
         e.preventDefault();
         e.stopPropagation();
       } else if (e.key === "ArrowUp") {
-        setActiveIndex((prev) => (prev > 0 ? prev - 1 : list.length - 1));
+        queueMicrotask(() => {
+          setActiveIndex((prev) => (prev > 0 ? prev - 1 : list.length - 1));
+        });
         e.preventDefault();
         e.stopPropagation();
       } else if (e.key === "Enter" && activeIndex >= 0) {
@@ -99,43 +103,55 @@ const DropDownList: React.FC = () => {
 
   // 初始化
   useEffect(() => {
-    if (!context.luckysheet_select_save) return;
-    const last =
-      context.luckysheet_select_save[context.luckysheet_select_save.length - 1];
-    const rowIndex = last.row_focus;
-    const colIndex = last.column_focus;
-    if (rowIndex == null || colIndex == null) return;
-    let row = context.visibledatarow[rowIndex];
-    let col_pre = colIndex === 0 ? 0 : context.visibledatacolumn[colIndex - 1];
-    const d = getFlowdata(context);
-    if (!d) return;
-    const margeSet = mergeBorder(context, d, rowIndex, colIndex);
-    if (margeSet) {
-      [, row] = margeSet.row;
-      [col_pre, ,] = margeSet.column;
-    }
-    const index = getSheetIndex(context, context.currentSheetId) as number;
-    const { dataVerification } = context.luckysheetfile[index];
-    const item = dataVerification[`${rowIndex}_${colIndex}`];
-    const dropdownList = item ? getDropdownList(context, item.value1) : [];
-    // Filter dropdown list by cell input value
-    const cellValue = getCellValue(rowIndex, colIndex, d);
-    const filteredList = filterText
-      ? dropdownList.filter(
-          (listItem) =>
-            listItem &&
-            String(listItem).toLowerCase().includes(filterText.toLowerCase())
-        )
-      : dropdownList;
-    if (cellValue) {
-      setSelected(cellValue.toString().split(","));
-    }
-    setList(filteredList);
-    setPosition({
-      left: col_pre,
-      top: row,
-    });
-    setIsMul(item && item.type2 === "true");
+    // Wrap all state updates to avoid updating during render
+    const updateState = () => {
+      if (!context.luckysheet_select_save) return;
+      const last =
+        context.luckysheet_select_save[
+          context.luckysheet_select_save.length - 1
+        ];
+      const rowIndex = last.row_focus;
+      const colIndex = last.column_focus;
+      if (rowIndex == null || colIndex == null) return;
+      let row = context.visibledatarow[rowIndex];
+      let col_pre =
+        colIndex === 0 ? 0 : context.visibledatacolumn[colIndex - 1];
+      const d = getFlowdata(context);
+      if (!d) return;
+      const margeSet = mergeBorder(context, d, rowIndex, colIndex);
+      if (margeSet) {
+        [, row] = margeSet.row;
+        [col_pre, ,] = margeSet.column;
+      }
+      const index = getSheetIndex(context, context.currentSheetId) as number;
+      const { dataVerification } = context.luckysheetfile[index];
+      const item = dataVerification[`${rowIndex}_${colIndex}`];
+      const dropdownList = item ? getDropdownList(context, item.value1) : [];
+      // Filter dropdown list by cell input value
+      const cellValue = getCellValue(rowIndex, colIndex, d);
+      const filteredList = filterText
+        ? dropdownList.filter(
+            (listItem) =>
+              listItem &&
+              String(listItem).toLowerCase().includes(filterText.toLowerCase())
+          )
+        : dropdownList;
+
+      // Batch all state updates together using queueMicrotask
+      queueMicrotask(() => {
+        if (cellValue) {
+          setSelected(cellValue.toString().split(","));
+        }
+        setList(filteredList);
+        setPosition({
+          left: col_pre,
+          top: row,
+        });
+        setIsMul(item && item.type2 === "true");
+      });
+    };
+
+    updateState();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context.luckysheetCellUpdate, filterText]);
   // Live update filterText on cell input change using MutationObserver
@@ -143,7 +159,10 @@ const DropDownList: React.FC = () => {
     const input = document.getElementById("luckysheet-rich-text-editor");
     if (!input) return undefined;
     const observer = new MutationObserver(() => {
-      setFilterText(input.textContent || "");
+      // Defer state update to avoid updating during render
+      queueMicrotask(() => {
+        setFilterText(input.textContent || "");
+      });
     });
     observer.observe(input, {
       childList: true,
@@ -151,7 +170,9 @@ const DropDownList: React.FC = () => {
       characterData: true,
     });
     // Initial set
-    setFilterText(input.textContent || "");
+    queueMicrotask(() => {
+      setFilterText(input.textContent || "");
+    });
     return () => observer.disconnect();
   }, [context.luckysheetCellUpdate]);
 
