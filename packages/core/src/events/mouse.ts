@@ -84,8 +84,8 @@ export function handleGlobalWheel(
   if (cache.searchDialog?.mouseEnter && ctx.showSearch && ctx.showReplace)
     return;
   if (ctx.filterContextMenu != null) return;
-  let { scrollLeft } = scrollbarX;
-  const { scrollTop } = scrollbarY;
+  let scrollLeft = Math.round(scrollbarX.scrollLeft);
+  const scrollTop = Math.round(scrollbarY.scrollTop);
   let visibledatacolumn_c = ctx.visibledatacolumn;
   let visibledatarow_c = ctx.visibledatarow;
 
@@ -130,13 +130,12 @@ export function handleGlobalWheel(
   //   );
   // }
 
-  let rowscroll = 0;
-
   // TODO const scrollNum = e.deltaFactor < 40 ? 1 : e.deltaFactor < 80 ? 2 : 3;
   const scrollNum = 1;
 
   // 一次滚动三行或三列
   if (e.deltaY !== 0 && !cache.verticalScrollLock) {
+    let rowscroll = 0;
     cache.horizontalScrollLock = true;
     let row_ed;
     let step = Math.round(scrollNum / ctx.zoomRatio);
@@ -164,15 +163,16 @@ export function handleGlobalWheel(
     // 通过滚动scrollbar来让浏览器自动控制滚动边界
     scrollbarY.scrollTop = rowscroll;
   } else if (e.deltaX !== 0 && !cache.horizontalScrollLock) {
+    let colscroll = 0;
     cache.verticalScrollLock = true;
     if (e.deltaX > 0) {
-      scrollLeft += 20 * ctx.zoomRatio;
+      colscroll += 20 * ctx.zoomRatio;
     } else {
-      scrollLeft -= 20 * ctx.zoomRatio;
+      colscroll -= 20 * ctx.zoomRatio;
     }
 
     // 通过滚动scrollbar来让浏览器自动控制滚动边界
-    scrollbarX.scrollLeft = scrollLeft;
+    scrollbarX.scrollLeft = colscroll;
   }
 
   mouseWheelUniqueTimeout = setTimeout(() => {

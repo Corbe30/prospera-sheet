@@ -7,7 +7,7 @@
   "files": [
     "dist"
   ],
-  "repository": "https://github.com/Corb30/prospera-sheet",
+  "repository": "https://github.com/Corbe30/prospera-sheet",
   "license": "MIT",
   "dependencies": {
     "@prospera-sheet/formula-parser": "^0.2.13",
