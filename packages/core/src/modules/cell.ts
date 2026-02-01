@@ -39,7 +39,7 @@ import { setFormulaCellInfo } from "./formulaHelper";
 export function normalizedCellAttr(
   cell: Cell,
   attr: keyof Cell,
-  defaultFontSize = 10
+  defaultFontSize = 10,
 ): any {
   const tf = { bl: 1, it: 1, ff: 1, cl: 1, un: 1 };
   let value: any = cell?.[attr];
@@ -74,7 +74,7 @@ export function normalizedAttr(
   data: CellMatrix,
   r: number,
   c: number,
-  attr: keyof Cell
+  attr: keyof Cell,
 ): any {
   if (!data || !data[r]) {
     console.warn("cell (%d, %d) is null", r, c);
@@ -89,7 +89,7 @@ export function getCellValue(
   r: number,
   c: number,
   data: CellMatrix,
-  attr?: keyof Cell
+  attr?: keyof Cell,
 ) {
   if (!attr) {
     attr = "v";
@@ -139,7 +139,7 @@ export function setCellValue(
   r: number,
   c: number,
   d: CellMatrix | null | undefined,
-  v: any
+  v: any,
 ) {
   if (_.isNil(d)) {
     d = getFlowdata(ctx);
@@ -252,7 +252,7 @@ export function setCellValue(
       !_.isNil(cell.f) &&
       isRealNum(vupdate) &&
       !/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(
-        vupdate
+        vupdate,
       )
     ) {
       cell.v = parseFloat(vupdate);
@@ -326,7 +326,7 @@ export function setCellValue(
       if (
         isRealNum(vupdate) &&
         !/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(
-          vupdate
+          vupdate,
         )
       ) {
         if (typeof vupdate === "string") {
@@ -387,7 +387,7 @@ export function getRealCellValue(
   r: number,
   c: number,
   data: CellMatrix,
-  attr?: keyof Cell
+  attr?: keyof Cell,
 ) {
   let value = getCellValue(r, c, data, "m");
   if (_.isNil(value)) {
@@ -407,7 +407,7 @@ export function mergeBorder(
   ctx: Context,
   d: CellMatrix,
   row_index: number,
-  col_index: number
+  col_index: number,
 ) {
   if (!d || !d[row_index]) {
     console.warn("Merge info is null", row_index, col_index);
@@ -490,7 +490,7 @@ export function mergeBorder(
     if (_.isNil(row_pre) || _.isNil(col_pre) || _.isNil(row) || _.isNil(col)) {
       console.warn(
         "Main merge info row_pre or col_pre or row or col is null",
-        mergeMain
+        mergeMain,
       );
       return null;
     }
@@ -512,7 +512,7 @@ function mergeMove(
   top: number,
   height: number,
   left: number,
-  width: number
+  width: number,
 ) {
   const row_st = mc.r;
   const row_ed = mc.r + mc.rs - 1;
@@ -598,7 +598,7 @@ export function mergeMoveMain(
   top: number,
   height: number,
   left: number,
-  width: number
+  width: number,
 ) {
   const mergesetting = ctx.config.merge;
 
@@ -634,7 +634,7 @@ export function mergeMoveMain(
         top,
         height,
         left,
-        width
+        width,
       );
 
       if (changeparam != null) {
@@ -686,7 +686,7 @@ export function updateCell(
   c: number,
   $input?: HTMLDivElement | null,
   value?: any,
-  canvas?: CanvasRenderingContext2D
+  canvas?: CanvasRenderingContext2D,
 ) {
   let inputText = $input?.innerText;
   const inputHtml = $input?.innerHTML;
@@ -764,7 +764,7 @@ export function updateCell(
     curv.ct.t = "inlineStr";
     curv.ct.s = convertSpanToShareString(
       $input!.querySelectorAll("span"),
-      curv
+      curv,
     );
     delete curv.fs;
     delete curv.f;
@@ -871,7 +871,7 @@ export function updateCell(
             c,
             undefined,
             undefined,
-            true
+            true,
           );
           isRunExecFunction = false;
           // get v/m/ct
@@ -957,7 +957,7 @@ export function updateCell(
           c,
           undefined,
           undefined,
-          true
+          true,
         );
         isRunExecFunction = false;
         // value = {
@@ -1107,7 +1107,7 @@ export function getcellFormula(
   r: number,
   c: number,
   i: string,
-  data?: any
+  data?: any,
 ) {
   let cell;
   if (_.isNil(data)) {
@@ -1163,7 +1163,7 @@ export function getRangetxt(
   ctx: Context,
   sheetId: string,
   range: SingleRange,
-  currentId?: string
+  currentId?: string,
 ) {
   let sheettxt = "";
 
@@ -1180,7 +1180,7 @@ export function getRangetxt(
     if (
       // eslint-disable-next-line no-misleading-character-class
       /^[:A-Z_a-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD][:A-Z_a-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\-.0-9\u00B7\u0300-\u036F\u203F-\u2040]*$/.test(
-        sheettxt
+        sheettxt,
       )
     ) {
       sheettxt += "!";
@@ -1196,14 +1196,17 @@ export function getRangetxt(
 
   if (row0 == null && row1 == null) {
     return `${sheettxt + indexToColumnChar(column0)}:${indexToColumnChar(
-      column1
+      column1,
     )}`;
   }
   if (column0 == null && column1 == null) {
     return `${sheettxt + (row0 + 1)}:${row1 + 1}`;
   }
 
-  if (column0 === column1 && row0 === row1) {
+  if (
+    (column0 === column1 && row0 === row1) ||
+    (column1 === undefined && row1 === undefined)
+  ) {
     return sheettxt + indexToColumnChar(column0) + (row0 + 1);
   }
 
@@ -1236,7 +1239,7 @@ export function getRangeByTxt(ctx: Context, txt: string) {
 export function isAllSelectedCellsInStatus(
   ctx: Context,
   attr: keyof Cell,
-  status: any
+  status: any,
 ) {
   // editing mode
   if (!_.isEmpty(ctx.luckysheetCellUpdate)) {
@@ -1254,7 +1257,7 @@ export function isAllSelectedCellsInStatus(
     if (startContainer === endContainer) {
       return !_.isEmpty(
         // @ts-ignore
-        startContainer.parentElement?.style[cssField]
+        startContainer.parentElement?.style[cssField],
       );
     }
     if (
@@ -1293,7 +1296,7 @@ export function getFontStyleByCell(
   cell: Cell | null | undefined,
   checksAF?: any[],
   checksCF?: any,
-  isCheck = true
+  isCheck = true,
 ) {
   const style: any = {};
   if (!cell) {
@@ -1361,7 +1364,7 @@ export function getStyleByCell(
   ctx: Context,
   d: CellMatrix,
   r: number,
-  c: number
+  c: number,
 ) {
   let style: any = {};
 
@@ -1595,7 +1598,7 @@ export function rowlenByRange(
 export function getdatabyselection(
   ctx: Context,
   range: Selection | undefined,
-  sheetId: string
+  sheetId: string,
 ) {
   if (range == null && ctx.luckysheet_select_save) {
     [range] = ctx.luckysheet_select_save;
@@ -1644,7 +1647,7 @@ export function getdatabyselection(
 export function luckysheetUpdateCell(
   ctx: Context,
   row_index: number,
-  col_index: number
+  col_index: number,
 ) {
   ctx.luckysheetCellUpdate = [row_index, col_index];
 }
