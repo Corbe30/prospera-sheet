@@ -163,7 +163,7 @@ export function handleGlobalWheel(
     // 通过滚动scrollbar来让浏览器自动控制滚动边界
     scrollbarY.scrollTop = rowscroll;
   } else if (e.deltaX !== 0 && !cache.horizontalScrollLock) {
-    let colscroll = 0;
+    let colscroll = scrollLeft;
     cache.verticalScrollLock = true;
     if (e.deltaX > 0) {
       colscroll += 20 * ctx.zoomRatio;
