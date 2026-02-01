@@ -27,15 +27,15 @@ Moreover, due to its access limitations and new changes to [npm token expiration
 
 ## Upcoming Improvements
 
-- [ ] Special Paste Support [ctrl/cmd + shift + v]
+- [X] Special Paste Support [ctrl/cmd + shift + v]
+- [X] NaN in Selected Cell/ Range box
 - [ ] Updated documentation
 - [ ] Updated and Improved Storybooks
 - [ ] Dark theme
-- [ ] NaN in Selected Cell/ Range box
-- [ ] Optimized Edit Cell operation
-- [ ] Optimized Load by deferring caching
-- [ ] Optimized Memory Usage to reduce crashes
-- [ ] Placeholder text
+- [ ] Optimizations
+  - [ ] Optimized Edit Cell operation
+  - [ ] Optimized Load by deferring caching
+  - [ ] Optimized Memory Usage to reduce crashes
 - [ ] Data Validation Sidebar (https://github.com/ruilisi/fortune-sheet/issues/746)
 - [ ] Placeholder text (https://github.com/ruilisi/fortune-sheet/issues/716)
 
