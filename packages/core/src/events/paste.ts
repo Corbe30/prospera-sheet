@@ -469,13 +469,13 @@ function pasteHandler(ctx: Context, data: any, borderInfo?: any) {
         if (originCell) {
           originCell.v = value;
           if (originCell.ct != null && originCell.ct.fa != null) {
-            originCell.m = update(originCell.ct.fa, value);
+            originCell.m = `${update(originCell.ct.fa, value)}`;
           } else {
-            originCell.m = value;
+            originCell.m = `${value}`;
           }
 
           if (originCell.f != null && originCell.f.length > 0) {
-            originCell.f = "";
+            delete originCell.f;
             delFunctionGroup(ctx, r + curR, c + curC, ctx.currentSheetId);
           }
         } else {

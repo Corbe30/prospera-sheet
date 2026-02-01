@@ -1203,7 +1203,10 @@ export function getRangetxt(
     return `${sheettxt + (row0 + 1)}:${row1 + 1}`;
   }
 
-  if (column0 === column1 && row0 === row1) {
+  if (
+    (column0 === column1 && row0 === row1) ||
+    (column1 === undefined && row1 === undefined)
+  ) {
     return sheettxt + indexToColumnChar(column0) + (row0 + 1);
   }
 

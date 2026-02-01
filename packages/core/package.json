@@ -1,13 +1,13 @@
 {
   "name": "@prospera-sheet/core",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "typings": "dist/index.d.ts",
   "files": [
     "dist"
   ],
-  "repository": "https://github.com/Corb30/prospera-sheet",
+  "repository": "https://github.com/Corbe30/prospera-sheet",
   "license": "MIT",
   "dependencies": {
     "@prospera-sheet/formula-parser": "^0.2.13",

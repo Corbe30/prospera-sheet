@@ -310,6 +310,13 @@ export function handleWithCtrlOrMetaKey(
       handleRedo();
       e.stopPropagation();
       return;
+    } else if (e.code === "KeyV") {
+      if ((ctx.luckysheet_select_save?.length ?? 0) > 1) {
+        return;
+      }
+      selectionCache.isPasteAction = true;
+      e.stopPropagation();
+      return;
     }
   } else if (
     ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)
