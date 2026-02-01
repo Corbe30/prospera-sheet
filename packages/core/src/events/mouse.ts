@@ -84,7 +84,7 @@ export function handleGlobalWheel(
   if (cache.searchDialog?.mouseEnter && ctx.showSearch && ctx.showReplace)
     return;
   if (ctx.filterContextMenu != null) return;
-  let scrollLeft = Math.round(scrollbarX.scrollLeft);
+  const scrollLeft = Math.round(scrollbarX.scrollLeft);
   const scrollTop = Math.round(scrollbarY.scrollTop);
   let visibledatacolumn_c = ctx.visibledatacolumn;
   let visibledatarow_c = ctx.visibledatarow;
