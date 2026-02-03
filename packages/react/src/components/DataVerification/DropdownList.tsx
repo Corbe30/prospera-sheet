@@ -79,6 +79,30 @@ const DropDownList: React.FC = () => {
             if (!isMul) {
               ctx.dataVerificationDropDownList = false;
               ctx.luckysheetCellUpdate = [];
+
+              // Move cursor to cell below
+              if (
+                ctx.luckysheet_select_save &&
+                ctx.luckysheet_select_save.length > 0
+              ) {
+                const currentSelection =
+                  ctx.luckysheet_select_save[
+                    ctx.luckysheet_select_save.length - 1
+                  ];
+                const nextRow =
+                  (currentSelection.row_focus ?? currentSelection.row[0]) + 1;
+                const col =
+                  currentSelection.column_focus ?? currentSelection.column[0];
+
+                ctx.luckysheet_select_save = [
+                  {
+                    row: [nextRow, nextRow],
+                    column: [col, col],
+                    row_focus: nextRow,
+                    column_focus: col,
+                  },
+                ];
+              }
             }
           });
         }
@@ -236,6 +260,30 @@ const DropDownList: React.FC = () => {
               if (!isMul) {
                 ctx.dataVerificationDropDownList = false;
                 ctx.luckysheetCellUpdate = [];
+
+                // Move cursor to cell below
+                if (
+                  ctx.luckysheet_select_save &&
+                  ctx.luckysheet_select_save.length > 0
+                ) {
+                  const currentSelection =
+                    ctx.luckysheet_select_save[
+                      ctx.luckysheet_select_save.length - 1
+                    ];
+                  const nextRow =
+                    (currentSelection.row_focus ?? currentSelection.row[0]) + 1;
+                  const col =
+                    currentSelection.column_focus ?? currentSelection.column[0];
+
+                  ctx.luckysheet_select_save = [
+                    {
+                      row: [nextRow, nextRow],
+                      column: [col, col],
+                      row_focus: nextRow,
+                      column_focus: col,
+                    },
+                  ];
+                }
               }
             });
           }
