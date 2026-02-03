@@ -149,6 +149,7 @@ const DropDownList: React.FC = () => {
       }
       const index = getSheetIndex(context, context.currentSheetId) as number;
       const { dataVerification } = context.luckysheetfile[index];
+      if (!dataVerification) return;
       const item = dataVerification[`${rowIndex}_${colIndex}`];
       const dropdownList = item ? getDropdownList(context, item.value1) : [];
       // Filter dropdown list by cell input value
@@ -210,6 +211,7 @@ const DropDownList: React.FC = () => {
     if (rowIndex == null || colIndex == null) return;
     const index = getSheetIndex(context, context.currentSheetId) as number;
     const { dataVerification } = context.luckysheetfile[index];
+    if (!dataVerification) return;
     const item = dataVerification[`${rowIndex}_${colIndex}`];
     if (!item || item.type2 !== "true") return;
     const d = getFlowdata(context);
