@@ -5,7 +5,12 @@ import React, {
   useRef,
   useCallback,
 } from "react";
-import { getFlowdata, setCellValue, jfrefreshgrid } from "@fortune-sheet/core";
+import {
+  getFlowdata,
+  setCellValue,
+  jfrefreshgrid,
+  getSheetIndex,
+} from "@fortune-sheet/core";
 import WorkbookContext from "../../context";
 
 const AutocompleteList: React.FC = () => {
@@ -149,10 +154,21 @@ const AutocompleteList: React.FC = () => {
   const col_index = selection.column_focus;
   if (col_index == null) return null;
 
+  const row_index = selection.row_focus ?? selection.row[0];
+  if (row_index == null) return null;
+
+  // Don't show autocomplete if cell has data verification
+  const sheetIndex = getSheetIndex(context, context.currentSheetId);
+  if (sheetIndex != null) {
+    const { dataVerification } = context.luckysheetfile[sheetIndex];
+    if (dataVerification && dataVerification[`${row_index}_${col_index}`]) {
+      return null;
+    }
+  }
+
   const col = context.visibledatacolumn[col_index];
   const col_pre =
     col_index === 0 ? 0 : context.visibledatacolumn[col_index - 1];
-  const row_index = selection.row_focus ?? selection.row[0];
   const row = context.visibledatarow[row_index];
 
   return (
