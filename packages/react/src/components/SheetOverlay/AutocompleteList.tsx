@@ -82,6 +82,28 @@ const AutocompleteList: React.FC = () => {
     if (!input) return undefined;
 
     const observer = new MutationObserver(() => {
+      // Check if current cell has data verification
+      const selection = context.luckysheet_select_save?.[0];
+      if (selection) {
+        const row_index = selection.row_focus ?? selection.row[0];
+        const col_index = selection.column_focus ?? selection.column[0];
+
+        if (row_index != null && col_index != null) {
+          const sheetIndex = getSheetIndex(context, context.currentSheetId);
+          if (sheetIndex != null) {
+            const { dataVerification } = context.luckysheetfile[sheetIndex];
+            if (
+              dataVerification &&
+              dataVerification[`${row_index}_${col_index}`]
+            ) {
+              // Don't show autocomplete for cells with data verification
+              setSuggestions([]);
+              return;
+            }
+          }
+        }
+      }
+
       const text = input.textContent || "";
 
       if (text.trim()) {
@@ -105,6 +127,7 @@ const AutocompleteList: React.FC = () => {
     });
 
     return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getColumnValues]);
 
   // Handle keyboard navigation

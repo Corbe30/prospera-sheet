@@ -16,6 +16,7 @@ import {
   escapeHTMLTag,
   isAllowEdit,
   getrangeseleciton,
+  updateCell,
 } from "@fortune-sheet/core";
 import React, {
   useContext,
@@ -244,7 +245,30 @@ const InputBox: React.FC = () => {
           e.stopPropagation();
         } else selectActiveFormula(e);
       } else if (e.key === "Tab" && context.luckysheetCellUpdate.length > 0) {
-        selectActiveFormula(e);
+        // Save current cell and move to the right cell
+        setContext((draftCtx) => {
+          const lastCellUpdate = _.clone(draftCtx.luckysheetCellUpdate);
+          updateCell(
+            draftCtx,
+            draftCtx.luckysheetCellUpdate[0],
+            draftCtx.luckysheetCellUpdate[1],
+            refs.cellInput.current!
+          );
+          draftCtx.luckysheet_select_save = [
+            {
+              row: [lastCellUpdate[0], lastCellUpdate[0]],
+              column: [lastCellUpdate[1], lastCellUpdate[1]],
+              row_focus: lastCellUpdate[0],
+              column_focus: lastCellUpdate[1],
+            },
+          ];
+          moveHighlightCell(
+            draftCtx,
+            "right",
+            e.shiftKey ? -1 : 1,
+            "rangeOfSelect"
+          );
+        });
         e.preventDefault();
       } else if (e.key === "F4" && context.luckysheetCellUpdate.length > 0) {
         // formula.setfreezonFuc(event);
@@ -312,6 +336,7 @@ const InputBox: React.FC = () => {
       //   formulaMoveEvent("right", ctrlKey, shiftKey, event);
       // }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       clearSearchItemActiveClass,
       context.luckysheetCellUpdate.length,

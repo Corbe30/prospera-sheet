@@ -108,6 +108,53 @@ const DropDownList: React.FC = () => {
         }
         e.preventDefault();
         e.stopPropagation();
+      } else if (e.key === "Tab" && activeIndex >= 0) {
+        const v = list[activeIndex];
+        if (v !== undefined) {
+          setContext((ctx) => {
+            const arr = isMul ? selected.slice() : [];
+            const index = arr.indexOf(v);
+            if (index < 0) {
+              arr.push(v);
+            } else {
+              arr.splice(index, 1);
+            }
+            setSelected(arr);
+            setDropcownValue(ctx, v, arr);
+            // Close dropdown and exit edit mode after selection
+            if (!isMul) {
+              ctx.dataVerificationDropDownList = false;
+              ctx.luckysheetCellUpdate = [];
+
+              // Move cursor to cell on the right
+              if (
+                ctx.luckysheet_select_save &&
+                ctx.luckysheet_select_save.length > 0
+              ) {
+                const currentSelection =
+                  ctx.luckysheet_select_save[
+                    ctx.luckysheet_select_save.length - 1
+                  ];
+                const row =
+                  currentSelection.row_focus ?? currentSelection.row[0];
+                const nextCol =
+                  (currentSelection.column_focus ??
+                    currentSelection.column[0]) + (e.shiftKey ? -1 : 1);
+
+                ctx.luckysheet_select_save = [
+                  {
+                    row: [row, row],
+                    column: [nextCol, nextCol],
+                    row_focus: row,
+                    column_focus: nextCol,
+                  },
+                ];
+              }
+            }
+          });
+        }
+        e.preventDefault();
+        e.stopPropagation();
       }
     };
 
