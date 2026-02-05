@@ -270,6 +270,7 @@ const InputBox: React.FC = () => {
           );
         });
         e.preventDefault();
+        e.stopPropagation();
       } else if (e.key === "F4" && context.luckysheetCellUpdate.length > 0) {
         // formula.setfreezonFuc(event);
         e.preventDefault();
